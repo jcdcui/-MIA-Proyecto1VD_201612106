@@ -1,0 +1,3 @@
+g++ Proyect1.cpp -o  Proyect1
+
+./Proyect1

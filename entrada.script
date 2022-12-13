@@ -1,0 +1,9 @@
+#Archivo de prueba fase 2
+mkdisk -s = 7 -u =m -path ="/home/archivos/Fase2/Disk1.disk"
+#rmdisk -path ->/home/archivos/Fase2/Disco2.disk
+#mkdisk   -path ->/home/archivos/fase2/Disco2.disk
+
+fdisk -s = 75 -u = K -name = Part1  -path = /home/archivos/Fase2/Disk1.disk
+
+
+#Juan Carlos Gomez 201612106

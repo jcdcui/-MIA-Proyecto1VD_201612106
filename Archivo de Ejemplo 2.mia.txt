@@ -1,0 +1,89 @@
+# Archivo de Ejemplo 2
+# MIA 2do Semestre 2022
+
+# Creacion de primer disco
+mkdisk -s->50 -u->m -path->/home/mia/Disco1.dsk
+
+# Creacion particiones disco 1, 4 primarias
+fdisk -s->5 -path->/home/mia/Disco1.dsk -u->m -name->Particion1 -f->ff
+# Error debe ser s no size
+fdisk -size->1024 -path->/home/mia/Disco1.dsk -u->k -name->Particion2
+fdisk -s->1024 -path->/home/mia/Disco1.dsk -u->k -name->Particion2
+fdisk -s->10 -u->m -path->/home/mia/Disco1.dsk -name->Particion3
+fdisk -s->25 -path->/home/mia/Disco1.dsk -name->Particion4 -f->wf -u->m
+# Error ya existe la parcion en el Disco1 
+fdisk -s->25 -path->/home/mia/Disco1.dsk -name->Particion4 -f->wf -u->m
+
+# Creacion de segundo y tercer disco
+mkdisk -s->25 -f->bf -u->m -path->"/home/mia/primer semestre/Disco2.dsk"
+mkdisk -u->k -s->75 -path->"/home/mia/primer semestre/entrada1/Disco3.dsk"
+
+# Creacion de particiones disco 2, 3 primarias 1 extendida
+fdisk -s->500 -u->k -path->"/home/mia/primer semestre/Disco2.dsk" -name->Particion1 -f->ff
+fdisk -s->1024 -path->"/home/mia/primer semestre/Disco2.dsk" -u->k -name->Particion2
+fdisk -s->10 -u->m -path->"/home/mia/primer semestre/Disco2.dsk" -name->Particion3
+fdisk -u->k -s->4096 -path->"/home/mia/primer semestre/Disco2.dsk" -t->E -name->Particion4 -f->wf  
+
+pause
+
+# Creacion de particiones disco 3, 2 primarias, 1 extendida y 2 logicas
+fdisk -s->5000 -path->"/home/mia/primer semestre/entrada1/Disco3.dsk" -name->Particion1 -u->b 
+fdisk -s->30 -path->"/home/mia/primer semestre/entrada1/Disco3.dsk" -u->m -t->E -f->bf -name->Particion2
+fdisk -s->5 -t->L -u->m -path->"/home/mia/primer semestre/entrada1/Disco3.dsk" -name->Particion3
+fdisk -t->L -u->k -s->4096 -path->"/home/mia/primer semestre/entrada1/Disco3.dsk" -name->Particion4
+fdisk -s->3 -path->"/home/mia/primer semestre/entrada1/Disco3.dsk" -name->Particion5 -u->m
+
+# Editar particiones
+fdisk -add->-3 -u->m -name->Particion1 -path->/home/mia/Disco1.dsk
+fdisk -add->5 -u->m -name->Particion3 -path->/home/mia/Disco1.dsk 
+
+# Mount
+# XX1Disco1
+mount -path->/home/mia/Disco1.dsk -name->Particion1
+# XX1Disco2
+mount -path->"/home/mia/primer semestre/Disco2.dsk" -name->Particion2
+# XX1Disco3 
+mount -path->"/home/mia/primer semestre/entrada1/Disco3.dsk" -name->Particion3
+
+# Reportes
+rep -id->XX1Disco1 -Path->/home/mia/reportes/mbr1.jpg -name->mbr
+rep -id->XX1Disco1 -Path->/home/mia/reportes/disco1.jpg -name->disk
+   
+# Formateo sistema de archivos ext2
+mkfs -type->fast -id->XX1Disco1
+
+rep -id->XX1Disco1 -Path->"/home/mia/reportes/ext2_sb_1.pdf" -name->sb
+rep -id->XX1Disco1 -Path->"/home/mia/reportes/ext2_tree_1.pdf" -name->tree
+
+pause
+
+# Login 
+Login -pass->123 -usr->root -id->XX1Disco1
+
+# Creacion de Grupos y Usuarios
+mkgrp -naMe->prueba1
+mkgrp -NamE->prueba2
+
+Cat -file1->/users.txt
+
+Mkusr -usr->"user1" -grp->root -pass->user1
+
+Cat -file1->/users.txt 
+
+# Reportes
+rep -id->XX1Disco1 -Path->"/home/mia/reportes/ext2_sb_1.pdf" -name->sb
+rep -id->XX1Disco1 -Path->"/home/mia/reportes/ext2_tree_1.pdf" -name->tree
+
+pause
+
+# Creacion de carpetas
+Mkdir -P -path->/home/archivos/mia/fase2
+Mkdir -path->/home/archivos/mia/carpeta2
+
+# Reportes
+rep -id->XX1Disco1 -Path->"/home/mia/reportes/reporte1_XX1Disco1_sb.pdf" -name->sb
+rep -id->XX1Disco1 -Path->"/home/mia/reportes/reporte1_XX1Disco1_tree.jpg" -name->tree
+rep -id->XX1Disco1 -Path->"/home/mia/reportes/reporte1_XX1Disco1_inode.pdf" -name->inode
+rep -id->XX1Disco1 -Path->"/home/mia/reportes/reporte1_XX1Disco1_block.pdf" -name->block
+rep -id->XX1Disco1 -Path->"/home/mia/reportes/reporte1_XX1Disco1_bm_inode.pdf" -name->bm_inode
+rep -id->XX1Disco1 -Path->"/home/mia/reportes/reporte1_XX1Disco1_bm_block.pdf" -name->bm_block

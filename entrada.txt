@@ -1,0 +1,191 @@
+mkdisk  -path ->/home/archivos/fase2/Disco1.disk 
+mkdisk   -path ->/home/archivos/fase2/Disco2.disk  
+
+fdisk -type -> P -name -> Part1  -path -> /home/archivos/fase2/Disco1.disk 
+fdisk -type -> P -name -> Part2  -path -> /home/archivos/fase2/Disco1.disk 
+fdisk -type -> P -name -> Part3  -path -> /home/archivos/fase2/Disco1.disk 
+
+
+
+ if(strcmp(Tmkdisk,auxtoken) == 0){//igual a ->1
+            cout<<"mkdisk detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tmkdisk);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+        }//OJO: situacion -path->  pegados no tomada en cuenta
+        else if(strcmp(Trmdisk,auxtoken) == 0){//igual a ->6
+            cout<<"rmdisk detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Trmdisk);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+        } else if(strcmp(Tfdisk,auxtoken) == 0){//igual a ->7
+            cout<<"fdisk detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tfdisk);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+        }      
+        }else if(strcmp(Tmount,auxtoken) == 0){//igual a ->12
+            cout<<"mount detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tmount);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+        }else if(strcmp(Tunmount,auxtoken) == 0){//igual a ->13
+            cout<<"unmount detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tunmount);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+        } }else if(strcmp(Tmkfs,auxtoken) == 0){//igual a ->15
+            cout<<"mkfs detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tmkfs);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+
+//-----------------Comandos Administrador Usuarios---------------------------            
+   
+        }  }else if(strcmp(Tlogin,auxtoken) == 0){//igual a ->18
+            cout<<"login detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tlogin);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+        }   }else if(strcmp(Tlogout,auxtoken) == 0){//igual a ->21
+            cout<<"logout detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tlogout);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+        }else if(strcmp(Tmkgrp,auxtoken) == 0){//igual a ->22
+            cout<<"mkgrp detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tmkgrp);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+        }else if(strcmp(Trep,auxtoken) == 0){//igual a ->23
+            cout<<"rep detected"<<endl;
+            //guarda rep tipo
+            strcpy(comandos[contComandos].tipo,Trep);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //ReporteConsola();
+            contComandos++;
+             
+        } else if(strcmp(Trmgrp,auxtoken) == 0){//igual a ->26
+            cout<<"rmgrp detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Trmgrp);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+        }else if(strcmp(Tmkusr,auxtoken) == 0){//igual a ->27
+            cout<<"mkusr detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tmkusr);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+      }else if(strcmp(Trmusr,auxtoken) == 0){//igual a ->29
+            cout<<"rmusr detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Trmusr);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+
+//---------------Comandos Usuario root ---------------------------------
+
+        }else if(strcmp(Tchmod,auxtoken) == 0){//igual a ->30
+            cout<<"chmod detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tchmod);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+        }else if(strcmp(Tmkfile,auxtoken) == 0){//igual a ->33
+            cout<<"mkfile detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tmkfile);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+        }else if(strcmp(Tcat,auxtoken) == 0){//igual a ->35
+            cout<<"cat detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tcat);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+          }else if(strcmp(Tremovee,auxtoken) == 0){//igual a ->37
+            cout<<"remove detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tremovee);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+        }else if(strcmp(Tedit,auxtoken) == 0){//igual a ->38
+            cout<<"edit detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tedit);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+            
+        }else if(strcmp(Trenamee,auxtoken) == 0){//igual a ->39
+            cout<<"rename detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Trenamee);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+        }else if(strcmp(Tmkdir,auxtoken) == 0){//igual a ->40
+            cout<<"mkdir detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tmkdir);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+          }else if(strcmp(Tcopyy,auxtoken) == 0){//igual a ->42
+            cout<<"copy detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tcopyy);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+        }else if(strcmp(Tmovee,auxtoken) == 0){//igual a ->43
+            cout<<"move detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tmovee);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+        }
+         }else if(strcmp(Tfindd,auxtoken) == 0){//igual a ->45
+            cout<<"find detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tfindd);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+        }else if(strcmp(Tchown,auxtoken) == 0){//igual a ->46
+            cout<<"chown detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tchown);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+        }else if(strcmp(Tchgrp,auxtoken) == 0){//igual a ->47
+            cout<<"chgrp detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tchgrp);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+        }else if(strcmp(Tpausee,auxtoken) == 0){//igual a ->48
+            cout<<"pause detected"<<endl;
+            //guarda mkdisk tipo
+            strcpy(comandos[contComandos].tipo,Tpausee);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)
+            //CrearAbrirDisk();
+            contComandos++;
+             
+        }
