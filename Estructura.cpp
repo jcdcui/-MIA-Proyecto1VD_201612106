@@ -33,3 +33,11 @@ struct EBR{
     int part_next= 0;//Byte en el que está el próximo EBR. -1 si no hay siguiente
     char part_name[16]={'\0'};//Nombre de la partición
 };
+
+struct ParticionMount{
+    char direccion[100]={'\0'};
+    char nombre[20] ={'\0'};
+    char letra = '\0';
+     int numero = -1;
+     
+}ParticionesMount[25];

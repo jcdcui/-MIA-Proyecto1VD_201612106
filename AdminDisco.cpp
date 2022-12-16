@@ -27,9 +27,10 @@ int crearParticionLogica(struct MBR *mbr_,struct Particion *auxParticion,char *d
 /* Funcion que devuelve un booleano para comprobar la existencia del nombre de una particion en un disco
  * @param QString direccion: ruta del archivo
  * @param QString nombre: nombre de la particion
- * @return true = si existe | false = si no existe
+ * @return true = -1 no existe |si existe return #partion
 */
-bool existeParticion(char *direccion, char *nombre);
+int existeParticion(char *direccion, char *nombre);
+
 
 //---------------------------------------------------------------- Implementaticiones----------------------------------------------------------------
 
@@ -353,8 +354,7 @@ int crearParticionLogica(struct MBR *mbr_,struct Particion *auxParticion,char *d
 }
 
 
-
-bool existeParticion(char *direccion, char *nombre){
+int existeParticion(char *direccion, char *nombre){
     
     return false;
 }

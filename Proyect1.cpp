@@ -187,6 +187,11 @@ int EjecutarFdisk();
  * @param auxParticion
 */
 int creaParticionPrimaria(struct MBR *mbr_,struct Particion *auxParticion,char *direccion);
+//------------------------Mount----------------------------------------
+/** Devuelve -1 si falla y 0 si funciona  
+ * 
+*/
+int EjecutarMount();
 
 //----------------------------------------pueden ir en otro archivo --------------------------------------------------------
 void LimpiaString(char *auxtoken);
@@ -840,7 +845,7 @@ int VerificarParametro(char *anteriorToken,char* auxToken1,bool finalLinea){
                 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 comandos[contComandos] = comando;
                 LimpiaComando(&comando);
-                //EjecutarFdisk();
+                EjecutarMount();
                 contComandos++;
             }else{
                 cout<<comando.tipo<<" error no se puede generar este comando";
@@ -2067,6 +2072,45 @@ int creaParticionPrimaria(struct MBR *mbr_,struct Particion *auxParticion,char *
     return 0;
 }
 
+//--------------- Mount ----------------------------------------------------
+int EjecutarMount(){
+    int indexP = existeParticion(comandos[contComandos].Tpath,comandos[contComandos].Tname);
+    if(indexP==-1){ ErrorT("no esta creada la particion"); return -1;}
+
+    char valPath[90] = {'\0'};
+    char valName[20] ={'\0'};
+    strcpy(valPath,comandos[contComandos].Tpath);
+    strcpy(valName,comandos[contComandos].Tname);
+
+    //llena guardarNombre----------------
+    buscarNombre(comandos[contComandos].Tpath);
+    buscaDireccion(comandos[contComandos].Tpath); 
+    //cout<<"guardaDireccion:"<<guardaDireccion<<endl;
+   
+    //---------------------------------------------------------------------------------------------
+    char direccionMasArchivo[90] = {'\0'};//direccion completa
+    strcpy(direccionMasArchivo,guardaDireccion);
+    strcat(direccionMasArchivo,"/");
+    strcat(direccionMasArchivo,guardaNombre);
+    //------------direccionMasArchivo---------------------
+    /*
+    FILE *fp;
+    if((fp = fopen(valPath,"rb")) == NULL)    
+    {
+        ErrorT("no puede abrirse fichero en mount");
+        return -1;
+    }
+    
+    struct MBR masterboot;
+    fseek(fp,0,SEEK_SET);
+    fread(&masterboot,sizeof(MBR),1,fp);
+    fclose(fp);
+    */
+    
+
+    return 0;
+
+}
 
 void ReporteConsola(){
     //puede hacer metodo comnvertir de un struct a otro registro
@@ -2265,5 +2309,7 @@ void A_minusculas(char *cadena){
         i++;
     }
 }
+
+
 
 //quito crearParticionExtendida
