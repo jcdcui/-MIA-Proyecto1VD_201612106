@@ -38,6 +38,7 @@ struct ParticionMount{
     char direccion[100]={'\0'};
     char nombre[20] ={'\0'};
     char letra = '\0';
-     int numero = -1;
+    int numero = -1;
+    char id[20]= {'\0'};
      
 }ParticionesMount[25];

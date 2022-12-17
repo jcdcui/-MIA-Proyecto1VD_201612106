@@ -18,6 +18,7 @@
 //---------------Include de archivos -----------------------
 #include "AdminDisco.cpp"
 #include "Estructura.cpp"
+#include "Mount.cpp"
 
 //----------------------------------------------------------
 
@@ -192,6 +193,9 @@ int creaParticionPrimaria(struct MBR *mbr_,struct Particion *auxParticion,char *
  * 
 */
 int EjecutarMount();
+/** Devuelve -1 si falla y 0 si funciona
+*/
+int EjecutarUnmount();
 
 //----------------------------------------pueden ir en otro archivo --------------------------------------------------------
 void LimpiaString(char *auxtoken);
@@ -2077,10 +2081,10 @@ int EjecutarMount(){
     int indexP = existeParticion(comandos[contComandos].Tpath,comandos[contComandos].Tname);
     if(indexP==-1){ ErrorT("no esta creada la particion"); return -1;}
 
-    char valPath[90] = {'\0'};
-    char valName[20] ={'\0'};
-    strcpy(valPath,comandos[contComandos].Tpath);
-    strcpy(valName,comandos[contComandos].Tname);
+    char valDireccion[90] = {'\0'};
+    char valNombre[20] ={'\0'};
+    strcpy(valDireccion,comandos[contComandos].Tpath);
+    strcpy(valNombre,comandos[contComandos].Tname);
 
     //llena guardarNombre----------------
     buscarNombre(comandos[contComandos].Tpath);
@@ -2106,11 +2110,33 @@ int EjecutarMount(){
     fread(&masterboot,sizeof(MBR),1,fp);
     fclose(fp);
     */
-    
+    int letra = AsignaLetra(valDireccion,valNombre);
+    if(letra == -1){ ErrorT("ya esta montada la partcion"); return -1;}
+    int numero = AsignaNumero(valDireccion,valNombre);
+    char auxLetra[] = {static_cast<char>(letra)};
+    char carnet[] = {"06"};
+    char auxId[20]={'\0'};
+    strcat(auxId,carnet);
+    strcat(auxId,to_string(numero).c_str());
+    strcat(auxId,auxLetra);
+
+    struct ParticionMount part;
+    strcpy(part.direccion,valDireccion);
+    part.letra = auxLetra[0];
+    strcpy(part.nombre,valNombre);
+    part.numero = numero;
+    strcpy(part.id,auxId);
+
+    int insertar = insertaNodo(part);
+    if(insertar == -1){ ErrorT("fallo insercion"); return -1;}
+    else{cout<<"Mount con exito"<<endl;}
+
+    mostrarMount();
 
     return 0;
-
 }
+
+int 
 
 void ReporteConsola(){
     //puede hacer metodo comnvertir de un struct a otro registro

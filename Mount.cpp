@@ -1,11 +1,20 @@
-#pragma oncei < count
-
+#pragma once
+#include <iostream>
 #include <string.h>
 #include "Estructura.cpp"
+
+using namespace std;
 
 int AsignaLetra(char *direccion,char *nombre);
 int AsignaNumero(char *direccion,char *nombre);
 int buscaParticionMount(char *direccion,char *nombre);
+/** Muestra las particiones montadas
+*/
+int mostrarMount();
+/** Metodo para insertar al final de la lista
+ * @param Particion nuevo: El nodo a insertar
+*/
+int insertaNodo(struct ParticionMount particion);
 
 //----------------------------------------------------------------
 /** Funcion para verificar que letra asignarle a una Particion Mount
@@ -66,4 +75,32 @@ int buscaParticionMount(char *direccion,char *nombre){
         }
     }
     return -1;
+}
+
+int insertaNodo(struct ParticionMount particion)
+{
+    for (int i = 0; i < 25; i++)
+    {
+        if(ParticionesMount[i].id[0] == '\0')
+        {
+            ParticionesMount[i] = particion;
+            return 0;
+        }
+    }
+    return -1;
+    
+}
+
+int mostrarMount()
+{
+    cout<< "---------------------------------" << endl;
+    cout<< "|       Particiones montadas    |" << endl;
+    cout<< "---------------------------------" << endl;
+
+    for (int i = 0; i<25 || ParticionesMount[i].id[0] != '\0' ; i++)
+    {
+        cout<<"nombre:"<<ParticionesMount[i].nombre<<" id:"<<ParticionesMount[i].id<<endl;
+    }
+    
+
 }
