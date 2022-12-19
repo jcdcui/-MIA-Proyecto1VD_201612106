@@ -101,12 +101,12 @@ int mbrRandom =0;
 //---------------------structs----------------------------
 
 struct comandoDisco{
-    char tipo[10]={'\0'};
+    char tipo[15]={'\0'};
     //por el momento solo para mkdisk 
     int Ts=0;
-    char Tf[15]={'\0'};
-    char Tu[15]={'\0'};
-    char Tpath[50]={'\0'};//
+    char Tf[20]={'\0'};
+    char Tu[20]={'\0'};
+    char Tpath[100]={'\0'};//
     
     char Tname[15]={'\0'};
     char Tid[15]={'\0'};
@@ -197,7 +197,17 @@ int EjecutarMount();
 */
 int EjecutarUnmount();
 
-//----------------------------------------pueden ir en otro archivo --------------------------------------------------------
+//------------------------------REP----------------------------------------------------------------
+/** Devuelve -1 si falla y 0 si funciona  
+ * 
+*/
+int EjecutarRep();
+/** Devuelve -1 si falla y 0 si funciona
+ * 
+*/
+int graficarDisco(char *nombre, char *direccion,char *_id);
+
+//----------------------------------pueden ir en otro archivo -------------------------------------------
 void LimpiaString(char *auxtoken);
 
 void LimpiaComando(struct comandoDisco *comandoL);
@@ -206,7 +216,7 @@ void A_minusculas(char *cadena);
 
 //quito crearParticionExtendida
 //quito existeParticion
-//------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------
 
 int main(int argc, char const *argv[])
 {
@@ -990,7 +1000,45 @@ int VerificarParametro(char *anteriorToken,char* auxToken1,bool finalLinea){
 
         }
     }else if(strcmp(Trep,comando.tipo) == 0){//igual a ->23
-        
+        if (strcmp(Tname,anteriorToken)==0)
+        {
+           strcpy(comando.Tname,auxToken);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)            
+        }else if (strcmp(Tpath,anteriorToken)==0)
+        {
+            strcpy(comando.Tpath,auxToken);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)   
+        }
+        else if (strcmp(Tid,anteriorToken)==0)
+        {
+            strcpy(comando.Tid,auxToken);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)   
+        }
+        else if (strcmp(Truta,anteriorToken)==0)
+        {
+            strcpy(comando.Truta,auxToken);//de la libreria string copia al primer param el param 2 desde 0 size(segundo)   
+        }
+        else{
+            cout<<comando.tipo<<" error no se puede generar este comando";
+            LimpiaString(comandos[contComandos].tipo);
+            return -1;
+        }
+        //veo si cumple todos los parametros si si lo guardo y EJECUTO EL COMANDO, sino no
+        if (finalLinea)
+        {
+            if (comando.Tpath[0] !='\0' && comando.Tname[0] !='\0' && comando.Tid[0] !='\0')
+            {
+                //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                comandos[contComandos] = comando;
+                LimpiaComando(&comando);
+                EjecutarRep();
+                contComandos++;
+            }else{
+                cout<<comando.tipo<<" error no se puede generar este comando";
+                LimpiaString(comandos[contComandos].tipo);
+                return -1;
+            }
+            
+        }else{//es espacio en blanco
+
+        }
         
     } else if(strcmp(Trmgrp,comando.tipo) == 0){//igual a ->26
         if (strcmp(Tname,anteriorToken)==0)
@@ -1765,7 +1813,8 @@ void crearDirectorio(char *direccion){
 //---------------------Fdisk-------------------------------------
 int EjecutarFdisk(){//OJO:param puede ser num particion a modificar o en los parametros 
    
-   //----------OJO:deberia comprobar la direccion exacta ----------
+   LimpiaString(guardaNombre); 
+   LimpiaString(guardaDireccion);
    //llena guardarNombre----------------
     buscarNombre(comandos[contComandos].Tpath);
     buscaDireccion(comandos[contComandos].Tpath); 
@@ -2136,7 +2185,14 @@ int EjecutarMount(){
     return 0;
 }
 
-int 
+//OJO:agrega ejecutar a donde se deben de llamar
+
+int EjecutarUnmount(){
+    
+    int l = eliminarNodo(comandos[contComandos].Tid);
+    if(l == -1){ErrorT("no se ejecuto bien Unmount"); return -1;}
+    return 0;
+}
 
 void ReporteConsola(){
     //puede hacer metodo comnvertir de un struct a otro registro
@@ -2172,7 +2228,108 @@ void ReporteConsola(){
     ArchivoBinario.close(); 
 
 }
+//------------------------------REP----------------------------------
+int EjecutarRep(){
+    char name[15]={'\0'};
+    strcpy(name,comandos[contComandos].Tname);
+    char path[100]={'\0'};
+    strcpy(path,comandos[contComandos].Tpath);
+    char id[15]={'\0'};
+    strcpy(id,comandos[contComandos].Tid);
+    char ruta[100]={'\0'};
+    strcpy(ruta,comandos[contComandos].Truta);
 
+    if (strcmp(name,"mbr") == 0)
+    {
+        graficarDisco(name,path,id);
+    }else  if (strcmp(name,"disk") == 0)
+    {
+
+    }else  if (strcmp(name,"inode") == 0 || strcmp(name,"Journaling") == 0 || strcmp(name,"block") == 0 || strcmp(name,"bm_inode") == 0 ||strcmp(name,"bm_block") == 0 ||strcmp(name,"tree") == 0||strcmp(name,"sb") == 0||strcmp(name,"file") == 0||strcmp(name,"ls") == 0)
+    {
+
+    }else{
+        ErrorT("name en rep no valido");
+        return -1;
+    }
+
+}
+
+int graficarDisco(char *nombre, char *direccion,char *id){
+    //compruebo si existe el id de la particion
+    int indiceM = buscaParticionMountId(id);
+    if(indiceM == -1) {ErrorT("Rep , no esta montada la particion"); return -1;}
+
+    char direc[100]={'\0'};
+    strcpy(direc,ParticionesMount[indiceM].direccion);
+
+    FILE *fp;
+    //MBR masterboot;
+    fp = fopen(direc, "rb+");
+    if(fp == NULL){
+        ErrorT("Rep,no se eoncontro el disco");
+        return -1;
+    }
+    //---------------------------
+    FILE *graphDot;
+    graphDot = fopen("grafica.dot","w");//fopen ya localizado en carpeta creada
+    fprintf(graphDot,"digraph structs {\n\n");
+    fprintf(graphDot,"node [shape=plaintext];\n");
+    fprintf(graphDot,"struct1 [label=<<TABLE>\n");
+    fprintf(graphDot,"<TR>\n");
+
+    //--------------------------
+    MBR masterboot;
+    fseek(fp,0,SEEK_SET);
+    fread(&masterboot,sizeof(MBR),1,fp);
+  //----------------archivo dot-------------------
+    fprintf(graphDot,"<TD BGCOLOR=\"blue\"><FONT COLOR=\"white\">MBR</FONT></TD>");
+    if(strcmp(masterboot.mbr_partition_1.part_type,"e")==0){
+        /*struct Particion auxParticion = masterboot.mbr_partition_1;
+        while(){
+
+        }*/
+        fprintf(graphDot,"<TD BGCOLOR=\"gray\"><FONT POINT-SIZE=\"24.0\">Extendida</FONT></TD>");
+    }else{
+        fprintf(graphDot,"<TD BGCOLOR=\"gray\"><FONT POINT-SIZE=\"24.0\">Primaria</FONT></TD>");
+    }
+    if(strcmp(masterboot.mbr_partition_2.part_type,"e")==0){
+        /*struct Particion auxParticion = masterboot.mbr_partition_1;
+        while(){
+
+        }*/
+        fprintf(graphDot,"<TD BGCOLOR=\"gray\"><FONT POINT-SIZE=\"24.0\">Extendida</FONT></TD>");
+    }else{
+        fprintf(graphDot,"<TD BGCOLOR=\"gray\"><FONT POINT-SIZE=\"24.0\">Primaria</FONT></TD>");
+    }
+    if(strcmp(masterboot.mbr_partition_3.part_type,"e")==0){
+        /*struct Particion auxParticion = masterboot.mbr_partition_1;
+        while(){
+
+        }*/
+        fprintf(graphDot,"<TD BGCOLOR=\"gray\"><FONT POINT-SIZE=\"24.0\">Extendida</FONT></TD>");
+    }else{
+        fprintf(graphDot,"<TD BGCOLOR=\"gray\"><FONT POINT-SIZE=\"24.0\">Primaria</FONT></TD>");
+    }
+    if(strcmp(masterboot.mbr_partition_4.part_type,"e")==0){
+        /*struct Particion auxParticion = masterboot.mbr_partition_1;
+        while(){
+
+        }*/
+        fprintf(graphDot,"<TD BGCOLOR=\"gray\"><FONT POINT-SIZE=\"24.0\">Extendida</FONT></TD>");
+    }else{
+        fprintf(graphDot,"<TD BGCOLOR=\"gray\"><FONT POINT-SIZE=\"24.0\">Primaria</FONT></TD>");
+    }
+  //-----------------------------------------------
+    fprintf(graphDot,"</TR>\n");
+    fprintf(graphDot,"</TABLE>>];\n");
+    fprintf(graphDot,"}\n");
+
+
+    LimpiaString(guardaNombre); 
+    LimpiaString(guardaDireccion);
+    return 0;
+}
 //---------------------------------------------------------------------------------------------
 /**
  * Guarda en guardaNombre el nombre en la direccion
@@ -2335,6 +2492,7 @@ void A_minusculas(char *cadena){
         i++;
     }
 }
+
 
 
 
